@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class JadwalKuliah extends Model
+{
+    protected $table = 'jadwal_kuliah';
+
+    protected $fillable = [
+        'kelas_id',
+        'hari',
+        'jam_mulai',
+        'jam_selesai',
+        'ruangan',
+    ];
+
+    protected $casts = [
+        'jam_mulai' => 'datetime:H:i',
+        'jam_selesai' => 'datetime:H:i',
+    ];
+
+    public function kelas(): BelongsTo
+    {
+        return $this->belongsTo(Kelas::class);
+    }
+
+    /**
+     * Check if this schedule conflicts with another
+     */
+    public function conflictsWith(JadwalKuliah $other): bool
+    {
+        if ($this->hari !== $other->hari) {
+            return false;
+        }
+
+        return !($this->jam_selesai <= $other->jam_mulai || $this->jam_mulai >= $other->jam_selesai);
+    }
+}

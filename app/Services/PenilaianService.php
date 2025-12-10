@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Nilai;
+use Exception;
+
+class PenilaianService
+{
+    public function inputNilai($mahasiswaId, $kelasId, $nilaiAngka)
+    {
+        // Cari konversi
+        $konversi = $this->getNilaiHuruf($nilaiAngka);
+
+        return Nilai::updateOrCreate(
+            [
+                'mahasiswa_id' => $mahasiswaId,
+                'kelas_id'     => $kelasId,
+            ],
+            [
+                'nilai_angka' => $nilaiAngka,
+                'nilai_huruf' => $konversi['huruf'],
+            ]
+        );
+    }
+
+    private function getNilaiHuruf($angka)
+    {
+        $rules = config('siakad.nilai_konversi');
+        
+        foreach ($rules as $rule) {
+            if ($angka >= $rule['min'] && $angka <= $rule['max']) {
+                return $rule;
+            }
+        }
+        
+        // Fallback default E
+        return ['huruf' => 'E', 'bobot' => 0];
+    }
+}
