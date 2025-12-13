@@ -13,7 +13,7 @@ class AiAdvisorService
     protected AdvisorContextBuilder $contextBuilder;
     protected AdvisorGuards $guards;
     protected string $apiKey;
-    protected string $model = 'groq/compound';
+    protected string $model = 'gemini-2.5-flash-lite';
 
     protected const MAX_RETRIES = 1;
 
@@ -23,18 +23,18 @@ class AiAdvisorService
     ) {
         $this->contextBuilder = $contextBuilder;
         $this->guards = $guards;
-        $this->apiKey = config('services.groq.api_key', '');
+        $this->apiKey = config('services.gemini.api_key', '');
     }
 
     /**
-     * Send a chat message to Groq with grounded student context
+     * Send a chat message to Gemini with grounded student context
      */
     public function chat(Mahasiswa $mahasiswa, string $message, array $history = []): array
     {
         if (empty($this->apiKey)) {
             return [
                 'success' => false,
-                'message' => 'API key belum dikonfigurasi. Silakan hubungi administrator.',
+                'message' => 'API key Gemini belum dikonfigurasi. Silakan hubungi administrator.',
             ];
         }
 
@@ -130,7 +130,7 @@ class AiAdvisorService
     }
 
     /**
-     * Call LLM API
+     * Call LLM API (Gemini via OpenAI compatibility)
      */
     protected function callLlm(string $systemPrompt, string $message, array $history = []): array
     {
@@ -162,7 +162,7 @@ class AiAdvisorService
                     'Authorization' => 'Bearer ' . $this->apiKey,
                     'Content-Type' => 'application/json',
                 ])
-                ->post('https://api.groq.com/openai/v1/chat/completions', [
+                ->post('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', [
                     'model' => $this->model,
                     'messages' => $messages,
                     'temperature' => 0.3, // Lower temperature for more deterministic outputs
@@ -242,7 +242,7 @@ class AiAdvisorService
                     'Authorization' => 'Bearer ' . $this->apiKey,
                     'Content-Type' => 'application/json',
                 ])
-                ->post('https://api.groq.com/openai/v1/chat/completions', [
+                ->post('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', [
                     'model' => $this->model,
                     'messages' => $messages,
                     'temperature' => 0.1, // Even lower for retry
