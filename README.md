@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Laravel-12.x-red?style=flat-square&logo=laravel" alt="Laravel Version">
+  <img src="https://img.shields.io/badge/Laravel-12-red?style=flat-square&logo=laravel" alt="Laravel Version">
   <img src="https://img.shields.io/badge/PHP-8.2+-blue?style=flat-square&logo=php" alt="PHP Version">
   <img src="https://img.shields.io/badge/TailwindCSS-3.x-38bdf8?style=flat-square&logo=tailwindcss" alt="TailwindCSS">
   <img src="https://img.shields.io/badge/Alpine.js-3.x-8BC0D0?style=flat-square&logo=alpine.js" alt="Alpine.js">
@@ -92,17 +92,17 @@
 ### Backend
 | Technology | Version | Description |
 |------------|---------|-------------|
-| **PHP** | 8.2+ | Server-side language |
-| **Laravel** | 12.x | PHP Framework |
-| **Laravel Breeze** | 2.x | Authentication scaffolding |
-| **Spatie Permission** | 6.x | Role & permission management |
+| **PHP** | 8.2 | Server-side language |
+| **Laravel** | 12 | PHP Framework |
+| **Laravel Breeze** | 2 | Authentication scaffolding |
+| **Spatie Permission** | 6 | Role & permission management |
 
 ### Frontend
 | Technology | Version | Description |
 |------------|---------|-------------|
-| **TailwindCSS** | 3.x | Utility-first CSS framework |
-| **Alpine.js** | 3.x | Lightweight JavaScript framework |
-| **Vite** | 7.x | Frontend build tool |
+| **TailwindCSS** | 3 | Utility-first CSS framework |
+| **Alpine.js** | 3 | Lightweight JavaScript framework |
+| **Vite** | 7 | Frontend build tool |
 
 ### Database
 | Technology | Description |
@@ -123,7 +123,7 @@
 ### Prerequisites
 
 - PHP 8.2 or higher
-- Composer 2.x
+- Composer 2..x
 - Node.js 18+ & npm
 - MySQL 8.0+ / PostgreSQL 14+ (for production)
 
@@ -131,7 +131,7 @@
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/siakad.git
+git clone https://github.com/ryandaaa/siakad.git
 cd siakad
 
 # 2. Install PHP dependencies
