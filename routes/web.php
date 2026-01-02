@@ -2,16 +2,6 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\FakultasController;
-use App\Http\Controllers\Admin\ProdiController;
-use App\Http\Controllers\Admin\MataKuliahController;
-use App\Http\Controllers\Admin\KelasController;
-use App\Http\Controllers\Admin\TahunAkademikController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\KrsApprovalController;
-use App\Http\Controllers\Admin\MahasiswaController;
-use App\Http\Controllers\Admin\DosenController;
 use App\Http\Controllers\HealthController;
 
 // Health check routes (no auth required)
@@ -47,98 +37,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/notifications/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
 });
 
-// --- ADMIN ROUTES ---
-Route::middleware(['auth', 'role:admin', 'fakultas.scope'])->prefix('admin')->name('admin.')->group(function () {
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    // Users
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-
-    // Master Data - Fakultas
-    Route::get('/fakultas', [FakultasController::class, 'index'])->name('fakultas.index');
-    Route::post('/fakultas', [FakultasController::class, 'store'])->name('fakultas.store');
-    Route::put('/fakultas/{fakultas}', [FakultasController::class, 'update'])->name('fakultas.update');
-    Route::delete('/fakultas/{fakultas}', [FakultasController::class, 'destroy'])->name('fakultas.destroy');
-
-    // Master Data - Prodi
-    Route::get('/prodi', [ProdiController::class, 'index'])->name('prodi.index');
-    Route::post('/prodi', [ProdiController::class, 'store'])->name('prodi.store');
-    Route::put('/prodi/{prodi}', [ProdiController::class, 'update'])->name('prodi.update');
-    Route::delete('/prodi/{prodi}', [ProdiController::class, 'destroy'])->name('prodi.destroy');
-
-    // Master Data - Mata Kuliah
-    Route::get('/mata-kuliah/export', [MataKuliahController::class, 'export'])->name('mata-kuliah.export');
-    Route::get('/mata-kuliah', [MataKuliahController::class, 'index'])->name('mata-kuliah.index');
-    Route::post('/mata-kuliah', [MataKuliahController::class, 'store'])->name('mata-kuliah.store');
-    Route::put('/mata-kuliah/{mataKuliah}', [MataKuliahController::class, 'update'])->name('mata-kuliah.update');
-    Route::delete('/mata-kuliah/{mataKuliah}', [MataKuliahController::class, 'destroy'])->name('mata-kuliah.destroy');
-
-    // Master Data - Kelas
-    Route::get('/kelas', [KelasController::class, 'index'])->name('kelas.index');
-    Route::post('/kelas', [KelasController::class, 'store'])->name('kelas.store');
-    Route::put('/kelas/{kelas}', [KelasController::class, 'update'])->name('kelas.update');
-    Route::delete('/kelas/{kelas}', [KelasController::class, 'destroy'])->name('kelas.destroy');
-
-    // Master Data - Tahun Akademik
-    Route::get('/tahun-akademik', [TahunAkademikController::class, 'index'])->name('tahun-akademik.index');
-    Route::post('/tahun-akademik', [TahunAkademikController::class, 'store'])->name('tahun-akademik.store');
-    Route::put('/tahun-akademik/{tahunAkademik}', [TahunAkademikController::class, 'update'])->name('tahun-akademik.update');
-    Route::delete('/tahun-akademik/{tahunAkademik}', [TahunAkademikController::class, 'destroy'])->name('tahun-akademik.destroy');
-    Route::get('/tahun-akademik/active', [TahunAkademikController::class, 'getActive'])->name('tahun-akademik.active');
-    Route::post('/tahun-akademik/{tahunAkademik}/activate', [TahunAkademikController::class, 'activate'])->name('tahun-akademik.activate');
-
-    // User Management
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
-
-
-    // KRS Approval (View Only - no approve/reject actions)
-    Route::get('/krs-approval', [KrsApprovalController::class, 'index'])->name('krs-approval.index');
-    Route::get('/krs-approval/{krs}', [KrsApprovalController::class, 'show'])->name('krs-approval.show');
-
-    // Mahasiswa Management
-    Route::get('/mahasiswa/export', [MahasiswaController::class, 'export'])->name('mahasiswa.export');
-    Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
-    Route::post('/mahasiswa', [MahasiswaController::class, 'store'])->name('mahasiswa.store');
-    Route::get('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'show'])->name('mahasiswa.show');
-    Route::put('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
-    Route::delete('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
-
-    // Dosen Management
-    Route::get('/dosen/export', [DosenController::class, 'export'])->name('dosen.export');
-    Route::get('/dosen', [DosenController::class, 'index'])->name('dosen.index');
-    Route::post('/dosen', [DosenController::class, 'store'])->name('dosen.store');
-    Route::get('/dosen/{dosen}', [DosenController::class, 'show'])->name('dosen.show');
-    Route::put('/dosen/{dosen}', [DosenController::class, 'update'])->name('dosen.update');
-    Route::delete('/dosen/{dosen}', [DosenController::class, 'destroy'])->name('dosen.destroy');
-
-    // Ruangan Management
-    Route::get('/ruangan', [\App\Http\Controllers\Admin\RuanganController::class, 'index'])->name('ruangan.index');
-    Route::post('/ruangan', [\App\Http\Controllers\Admin\RuanganController::class, 'store'])->name('ruangan.store');
-    Route::put('/ruangan/{ruangan}', [\App\Http\Controllers\Admin\RuanganController::class, 'update'])->name('ruangan.update');
-    Route::delete('/ruangan/{ruangan}', [\App\Http\Controllers\Admin\RuanganController::class, 'destroy'])->name('ruangan.destroy');
-
-    // Skripsi Management
-    Route::get('/skripsi', [\App\Http\Controllers\Admin\SkripsiController::class, 'index'])->name('skripsi.index');
-    Route::get('/skripsi/{skripsi}', [\App\Http\Controllers\Admin\SkripsiController::class, 'show'])->name('skripsi.show');
-    Route::post('/skripsi/{skripsi}/assign-pembimbing', [\App\Http\Controllers\Admin\SkripsiController::class, 'assignPembimbing'])->name('skripsi.assign-pembimbing');
-    Route::put('/skripsi/{skripsi}/status', [\App\Http\Controllers\Admin\SkripsiController::class, 'updateStatus'])->name('skripsi.update-status');
-    Route::put('/skripsi/{skripsi}/nilai', [\App\Http\Controllers\Admin\SkripsiController::class, 'updateNilai'])->name('skripsi.update-nilai');
-
-    // KP Management
-    Route::get('/kp', [\App\Http\Controllers\Admin\KpController::class, 'index'])->name('kp.index');
-    Route::get('/kp/{kp}', [\App\Http\Controllers\Admin\KpController::class, 'show'])->name('kp.show');
-    Route::post('/kp/{kp}/assign-pembimbing', [\App\Http\Controllers\Admin\KpController::class, 'assignPembimbing'])->name('kp.assign-pembimbing');
-    Route::put('/kp/{kp}/status', [\App\Http\Controllers\Admin\KpController::class, 'updateStatus'])->name('kp.update-status');
-    Route::put('/kp/{kp}/nilai', [\App\Http\Controllers\Admin\KpController::class, 'updateNilai'])->name('kp.update-nilai');
-
-    // Kehadiran Dosen
-    Route::get('/kehadiran-dosen', [\App\Http\Controllers\Admin\KehadiranDosenController::class, 'index'])->name('kehadiran-dosen.index');
-    Route::get('/kehadiran-dosen/{dosen}', [\App\Http\Controllers\Admin\KehadiranDosenController::class, 'show'])->name('kehadiran-dosen.show');
-});
 
 // --- DOSEN ROUTES ---
 Route::middleware(['auth', 'role:dosen'])->prefix('dosen')->name('dosen.')->group(function () {
@@ -203,3 +101,4 @@ Route::middleware(['auth', 'role:dosen'])->prefix('dosen')->name('dosen.')->grou
 
 require __DIR__.'/auth.php';
 require __DIR__.'/mahasiswa/index.php';
+require __DIR__.'/admin/index.php';
